@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <img src="{{ player.avatar }}">
+  <br>
+  {{ player.personaname }}
+  <br>
+  {{ player.account_id }}
+  <br>
+  {{ player.steamid }}
+  <br>
+  {{ player.last_login }}
+  <br>
+  {{ player.profileurl }}
+
+  <p><a href="{{ url_for("logout") }}">Logout</a></p>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Match {{ match.match_id }} | DotaNinja{% endblock %}
+{% block content %}
+  {% if match.match_id %}
+
+  <h2>Match {{ match.match_id }}</h2>
+
+  {% if match.radiant_win %}
+  <h3 class="victory radiant">Radiant Victory</h3>
+  {% else %}
+  <h3 class="victory dire">Dire Victory</h3>
+  {% endif %}
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Mode</th>
+        <th>Region</th>
+        <th>Duration</th>
+        <th>Ended</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ match.game_mode|game_mode }}</td>
+        <td>{{ match.cluster|region }}</td>
+        <td>{{ match.duration|duration }}</td>
+        <td>{{ (match.start_time + match.duration)|time_since }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Level</th>
+        <th>Hero</th>
+        <th>K</th>
+        <th>D</th>
+        <th>A</th>
+        <th>Gold</th>
+        <th>LH</th>
+        <th>DN</th>
+        <th>GPM</th>
+        <th>XPM</th>
+        <th>Items</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for player in match.players[:5] %}
+      <tr>
+        <td>{% if player.account_id == 4294967295 %}Anonymous{% else %}{{ player.account_id }}{% endif %}</td>
+        <td>{{ player.level }}</td>
+        <td><img src="{{ player.hero_id|hero_image }}"></td>
+        <td>{{ player.kills }}</td>
+        <td>{{ player.deaths }}</td>
+        <td>{{ player.assists }}</td>
+        <td>{{ player.gold }}</td>
+        <td>{{ player.last_hits }}</td>
+        <td>{{ player.denies }}</td>
+        <td>{{ player.gold_per_min }}</td>
+        <td>{{ player.xp_per_min }}</td>
+        <td>{% for i in range(0, 6) %}
+          {% if not player["item_"+i|string] == 0 %}
+          <img src="{{ player["item_"+i|string]|item_image }}" width="33" height="24">
+          {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Level</th>
+          <th>Hero</th>
+          <th>K</th>
+          <th>D</th>
+          <th>A</th>
+          <th>Gold</th>
+          <th>LH</th>
+          <th>DN</th>
+          <th>GPM</th>
+          <th>XPM</th>
+          <th>Items</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for player in match.players[5:] %}
+        <tr>
+          <td>{% if player.account_id == 4294967295 %}Anonymous{% else %}{{ player.account_id|player_name }}{% endif %}</td>
+          <td>{{ player.level }}</td>
+          <td><img src="{{ player.hero_id|hero_image }}"></td>
+          <td>{{ player.kills }}</td>
+          <td>{{ player.deaths }}</td>
+          <td>{{ player.assists }}</td>
+          <td>{{ player.gold }}</td>
+          <td>{{ player.last_hits }}</td>
+          <td>{{ player.denies }}</td>
+          <td>{{ player.gold_per_min }}</td>
+          <td>{{ player.xp_per_min }}</td>
+          <td>{% for i in range(0, 6) %}
+            {% if not player["item_"+i|string] == 0 %}
+            <img src="{{ player["item_"+i|string]|item_image }}" width="33" height="24">
+            {% endif %}
+            {% endfor %}
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+      {% endblock %}

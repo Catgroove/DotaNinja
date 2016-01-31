@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Matches | DotaNinja{% endblock %}
+{% block content %}
+<div class="row">
+  <h2>Matches</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Hero</th>
+        <th>Result</th>
+        <th>Mode</th>
+        <th>Ended</th>
+        <th>Duration</th>
+        <th>K</th>
+        <th>D</th>
+        <th>A</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for match in matches %}
+        <tr>
+          <td>
+            <a href="{{ url_for("render_match", match_id=match.match_id.match_id) }}">
+              {{ match.match_id.match_id }}
+            </a>
+          </td>
+          <td>
+            <img src="{{ match.hero_id|hero_image }}">
+          </td>
+          <td>
+            {% if match.player_slot < 5 %}
+              {{ match.match_id.radiant_win|result }}
+            {% else %}
+              {{ (not match.match_id.radiant_win)|result }}
+            {% endif %}
+          </td>
+          <td>
+            {{ match.match_id.game_mode|game_mode }}
+          </td>
+          <td>
+            {{ (match.match_id.start_time + match.match_id.duration)|time_since }}
+          </td>
+          <td>
+            {{ match.match_id.duration|duration }}
+          </td>
+          <td>
+            {{ match.kills }}
+          </td>
+          <td>
+            {{ match.deaths }}
+          </td>
+          <td>
+            {{ match.assists }}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ pagination.links }}
+  {{ pagination.info }}
+</div>
+{% endblock %}
