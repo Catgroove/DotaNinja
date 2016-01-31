@@ -7,7 +7,7 @@ from celery import Celery
 
 
 app = Flask(__name__)
-app.config.from_object('config')
+app.config.from_object("config")
 db = SqliteDatabase("dotaninja.db")
 api = PyDota(API_KEY)
 oid = OpenID(app)
